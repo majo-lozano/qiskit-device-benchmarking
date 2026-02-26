@@ -22,5 +22,7 @@ This folder contains example notebooks for running benchmarks.
 
 - [Layer Fidelity Placement](layer_fidelity_placement.ipynb): Example notebook of using layer fidelity to build an updated error map of the device that is more reflective of layered circuits. Also gives an example of a heuristic algorithm for finding the best N-qubit chain based on the error map.
 
-- [Clifford Benchmarking](clifford_xeb_lf.ipynb): Notebook that runs Clifford benchmarking of a fully entangled brickwork circuit. First, the code uses layer fidelity to build an updated error map (similar to [Layer Fidelity Placement](layer_fidelity_placement.ipynb)), finds the best chain and runs the Clifford benchmark on that chain for the full circuit. Optionally, the user can run a non-Clifford version of the same circuit and analyze the output with XEB. 
+- [Clifford Benchmarking](clifford_xeb_lf.ipynb): Notebook that runs Clifford benchmarking of a fully entangled brickwork circuit. First, the code uses layer fidelity to build an updated error map (similar to [Layer Fidelity Placement](layer_fidelity_placement.ipynb)), finds the best chain and runs the Clifford benchmark on that chain for the full circuit. Optionally, the user can run a non-Clifford version of the same circuit and analyze the output with XEB.
+
+- [Characterize Backend](characterize_backend.ipynb): Notebook for running characterization experiments on a backend and updating backend propoerties with real-time data. The characterization experiments supported are: SPAM, 1Q RB, 2Q layered RB (via Layer Fidelity), T1, T2 Hahn. 
 
