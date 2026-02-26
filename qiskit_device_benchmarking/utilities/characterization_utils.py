@@ -4,7 +4,6 @@ from typing import Dict, Iterable, List, Optional, Tuple, Union
 import copy
 import numpy as np
 import matplotlib.pyplot as plt
-import rustworkx as rx
 from qiskit_ibm_runtime.ibm_backend import IBMBackend
 from pandas import DataFrame
 
