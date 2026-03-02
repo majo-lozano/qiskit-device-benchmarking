@@ -15,22 +15,88 @@
 # A simplified alteration of the qiskit version to just use matplotlib
 # Will only work for Eagle, HeronR1, HeronR2
 
-import math
 from typing import List
 
-import numpy as np
 import rustworkx as rx
 from rustworkx.visualization import mpl_draw
 
 from qiskit.exceptions import QiskitError
 from qiskit.utils import optionals as _optionals
 from qiskit.transpiler.coupling import CouplingMap
-from qiskit.visualization.exceptions import VisualizationError
 
 
 def _get_backend_interface_version(backend):
     backend_interface_version = getattr(backend, "version", None)
     return backend_interface_version
+
+@_optionals.HAS_MATPLOTLIB.require_in_call
+def plot_chain(
+    backend,
+    figsize=None,
+    qchain=None,
+    chain_q_color='salmon',
+    not_chain_q_color='skyblue',
+    chain_edge_color='black',
+    not_chain_edge_color='white',
+):
+     
+    """Plots a chain on a device map.
+
+    Args:
+        backend (Backend): The backend instance that will be used to plot the device
+            gate map.
+        figsize (tuple): Output figure size (wxh) in inches.
+        qchain (list): the chain
+        chain_q_color (string): the color of the qubits in the chain
+        not_chain_q_color (string): the color of the qubits not in the chain
+        chain_edge_color (string): the color of the edges on the chain
+        not_chain_edge_color (string): the color of the edges not on the chain
+
+    Returns:
+        Figure: A Matplotlib figure instance.
+
+    Raises:
+        QiskitError: if tried to pass a simulator, or if the backend is None,
+            but one of num_qubits, mpl_data, or cmap is None.
+        MissingOptionalLibraryError: if matplotlib not installed.
+
+    Example:
+
+        .. plot::
+           :include-source:
+
+           from qiskit.providers.fake_provider import GenericBackendV2
+           from qiskit.visualization import plot_gate_map
+
+           backend = GenericBackendV2(num_qubits=5)
+
+           plot_chain(backend, qchain=[0,1,2])
+    """
+
+    if qchain is None:
+        raise QiskitError('No chain specified')
+     
+    qcolors = [
+        chain_q_color if i in qchain else "skyblue"
+        for i in range(0, backend.configuration().n_qubits)
+    ]
+
+    line_colors = []
+    for i in backend.coupling_map:
+        if i[0] in qchain:
+            if qchain.index(i[0])>0:
+                if qchain[qchain.index(i[0])-1]==i[1]:
+                    line_colors.append(chain_edge_color)
+                    continue
+
+            if qchain.index(i[0])<(len(qchain)-1):
+                if qchain[qchain.index(i[0])+1]==i[1]:
+                    line_colors.append(chain_edge_color)
+                    continue
+        
+        line_colors.append(not_chain_edge_color)
+
+    return plot_gate_map(backend, figsize=figsize, label_qubits=True, qubit_color=qcolors, line_color=line_colors)
 
 
 @_optionals.HAS_MATPLOTLIB.require_in_call
@@ -356,7 +422,7 @@ def plot_gate_map(
         [13, 0],
         [13, 4],
         [13, 8],
-        [13, 12]
+        [13, 12],
     ]
 
     qubit_coordinates_map[156] = [
@@ -517,7 +583,130 @@ def plot_gate_map(
         [14, 14],
         [14, 15],
     ]
-    
+
+    qubit_coordinates_map[120] = [
+        [0,0],
+		[0,1],
+		[0,2],
+		[0,3],
+		[0,4],
+		[0,5],
+		[0,6],
+		[0,7],
+		[0,8],
+		[0,9],
+		[1,0],
+		[1,1],
+		[1,2],
+		[1,3],
+		[1,4],
+		[1,5],
+		[1,6],
+		[1,7],
+		[1,8],
+		[1,9],
+		[2,0],
+		[2,1],
+		[2,2],
+		[2,3],
+		[2,4],
+		[2,5],
+		[2,6],
+		[2,7],
+		[2,8],
+		[2,9],
+		[3,0],
+		[3,1],
+		[3,2],
+		[3,3],
+		[3,4],
+		[3,5],
+		[3,6],
+		[3,7],
+		[3,8],
+		[3,9],
+		[4,0],
+		[4,1],
+		[4,2],
+		[4,3],
+		[4,4],
+		[4,5],
+		[4,6],
+		[4,7],
+		[4,8],
+		[4,9],
+		[5,0],
+		[5,1],
+		[5,2],
+		[5,3],
+		[5,4],
+		[5,5],
+		[5,6],
+		[5,7],
+		[5,8],
+		[5,9],
+		[6,0],
+		[6,1],
+		[6,2],
+		[6,3],
+		[6,4],
+		[6,5],
+		[6,6],
+		[6,7],
+		[6,8],
+		[6,9],
+		[7,0],
+		[7,1],
+		[7,2],
+		[7,3],
+		[7,4],
+		[7,5],
+		[7,6],
+		[7,7],
+		[7,8],
+		[7,9],
+		[8,0],
+		[8,1],
+		[8,2],
+		[8,3],
+		[8,4],
+		[8,5],
+		[8,6],
+		[8,7],
+		[8,8],
+		[8,9],
+		[9,0],
+		[9,1],
+		[9,2],
+		[9,3],
+		[9,4],
+		[9,5],
+		[9,6],
+		[9,7],
+		[9,8],
+		[9,9],
+		[10,0],
+		[10,1],
+		[10,2],
+		[10,3],
+		[10,4],
+		[10,5],
+		[10,6],
+		[10,7],
+		[10,8],
+		[10,9],
+		[11,0],
+		[11,1],
+		[11,2],
+		[11,3],
+		[11,4],
+		[11,5],
+		[11,6],
+		[11,7],
+		[11,8],
+		[11,9],
+    ]
+
     backend_version = _get_backend_interface_version(backend)
     if backend_version <= 1:
         if backend.configuration().simulator:
@@ -541,8 +730,10 @@ def plot_gate_map(
             )
 
     if qubit_coordinates is None:
-        raise QiskitError("No matching coordinate found, code has only 127, 133, 156 backends")
-        
+        raise QiskitError(
+            "No matching coordinate found, code has only 127, 133, 156 backends"
+        )
+
     return plot_coupling_map(
         num_qubits,
         qubit_coordinates,
@@ -560,7 +751,6 @@ def plot_gate_map(
         ax,
         planar=rx.is_planar(coupling_map.graph.to_undirected(multigraph=False)),
     )
-
 
 @_optionals.HAS_MATPLOTLIB.require_in_call
 def plot_coupling_map(
@@ -621,12 +811,6 @@ def plot_coupling_map(
             coupling_map = [[0, 1], [1, 2], [2, 3], [3, 5], [4, 5], [5, 6], [2, 4], [6, 7]]
             plot_coupling_map(num_qubits, qubit_coordinates, coupling_map)
     """
-    import matplotlib.pyplot as plt
-    from qiskit.visualization.utils import matplotlib_close_if_inline
-
-    input_axes = False
-    if ax:
-        input_axes = True
 
     if qubit_size is None:
         qubit_size = 30
@@ -663,11 +847,10 @@ def plot_coupling_map(
     for edge_index in graph.edge_indices():
         graph.update_edge_by_index(edge_index, edge_index)
 
-    # pixel-to-inch conversion
-    px = 1.15 / plt.rcParams["figure.dpi"]
-
     if qubit_coordinates:
-        qubit_coordinates = {i: qubit_coordinates[i][::-1] for i in range(len(qubit_coordinates))}
+        qubit_coordinates = {
+            i: qubit_coordinates[i][::-1] for i in range(len(qubit_coordinates))
+        }
 
     if font_size is None:
         max_characters = max(1, max(len(str(x)) for x in qubit_labels))
@@ -683,16 +866,14 @@ def plot_coupling_map(
     def node_label(node):
         return str(qubit_labels[node])
 
-    
-    plot = mpl_draw(
+    mpl_draw(
         graph,
-        pos = qubit_coordinates,
-        labels = node_label,
-        font_size = font_size,
-        font_color = font_color,
-        with_labels = label_qubits,
-        node_color = qubit_color,
-        edge_color = line_color,
-        ax=ax
+        pos=qubit_coordinates,
+        labels=node_label,
+        font_size=font_size,
+        font_color=font_color,
+        with_labels=label_qubits,
+        node_color=qubit_color,
+        edge_color=line_color,
+        ax=ax,
     )
-
